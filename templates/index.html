@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+<div>
+    <form action="{{ url_for('predict')}}" method="post">
+        <h2>Classification of faults in PV system using ANN</h2>
+        <table cellpadding="10" cellspacing="2" align="center">
+            <tr>
+                <td class="col1">Temperature</td>
+                <td colspan="2">
+                    <input id="first" name="Irradiance" type="number " class="groupOfTexbox" required="required"
+                           placeholder="Temperature" min="0" max="1000">
+
+            </tr>
+
+            <tr>
+                <td class="col1">Resistance</td>
+                <td colspan="2">
+                    <input id="second" name="Resistance" type="number " step="0.00001" class="groupOfTexbox"
+                           required="required" placeholder="Resistance" min="0" max="1000">
+            </tr>
+
+            <tr>
+                <td class="col1">I1
+                    <input id="third" name="I1" type="number" step="0.00001" class="groupOfTexbox" required="required"
+                           placeholder="I1" min="0" max="500">
+                </td>
+                <td class="col2">V1</td>
+                <td class="col3">
+                    <input id="fourth" name="V1" type="number" step="0.00001" class="groupOfTexbox" required="required"
+                           placeholder="V1" min="0" max="500">
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col1">I2
+                    <input id="fifth" name="I2" type="number" step="0.00001" class="groupOfTexbox" required="required"
+                           placeholder="I2" min="0" max="500">
+                </td>
+                <td class="col2">V2</td>
+                <td class="col3">
+                    <input id="sixth" name="V2" type="number" step="0.00001" class="groupOfTexbox" required="required"
+                           placeholder="V2" min="0" max="500"></td>
+            </tr>
+
+            <tr>
+                <td class="col1">I3
+                    <input id="seventh" name="I3" type="number" step="0.00001" class="groupOfTexbox" required="required"
+                           placeholder="I3" min="0" max="500">
+                </td>
+                <td class="col2">V3</td>
+                <td class="col3">
+                    <input id="eighth" name="V3" type="number" step="0.00001" class="groupOfTexbox" required="required"
+                           placeholder="V3" min="0" max="500"></td>
+            </tr>
+
+            <tr>
+                <td class="col1">I4
+                    <input id="ninth" name="I4" type="number" step="0.00001" class="groupOfTexbox" required="required"
+                           placeholder="I4" min="0" max="500">
+                </td>
+                <td class="col2">V4</td>
+                <td class="col3">
+                    <input id="tenth" name="V4" type="number" step="0.00001" class="groupOfTexbox" required="required"
+                           placeholder="V4" min="0" max="500"></td>
+            </tr>
+
+            <tr>
+                <td class="col1">I5
+                    <input id="eleventh" name="I5" type="number" step="0.00001" class="groupOfTexbox"
+                           required="required"
+                           placeholder="I5" min="0" max="500">
+                </td>
+                <td class="col2">V5</td>
+                <td class="col3">
+                    <input id="twelveth" name="V5" type="number" step="0.00001" class="groupOfTexbox"
+                           required="required"
+                           placeholder="V5" min="0" max="500"></td>
+            </tr>
+
+            <tr>
+                <td class="col1">I6
+                    <input id="thirteenth" name="I6" type="number" step="0.00001" class="groupOfTexbox"
+                           required="required"
+                           placeholder="I6" min="0" max="500">
+                </td>
+                <td class="col2">V6</td>
+                <td class="col3">
+                    <input id="fourtinth" name="V6" type="number" step="0.00001" class="groupOfTexbox"
+                           required="required"
+                           placeholder="V6" min="0" max="500"></td>
+            </tr>
+
+            <tr colspan="2" align="center">
+                <td>
+                    <br><br>
+                    <button id="sub" type="submit ">Check &nbsp Fault</button>
+                    <br>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+
+    <br><br>
+    <div class="ans" align="center">
+        <h2>{{ prediction_text }}</h2>
+    </div>
+</div>
+
+
+<style>
+        body {
+            text-align: center;
+            padding: 0px;
+            font-size: 22px;
+        }
+
+        h2 {
+            font-family: Arial;
+            font-size: 25px;
+            font-style: normal;
+            font-weight: bold;
+            color: black;
+            text-align: center;
+            text-decoration: underline;
+        }
+
+.ans{
+margin-top: -50px;
+}
+
+button {
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: black;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+  text-transform: uppercase;
+  width: 100%;
+  margin: -50px 10px 20px 80px;
+  font-weight: bold;
+}
+
+button:hover {
+background-color: red;
+color: black;
+}
+
+button:active {
+  background-color: grey;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+table {
+    background-color: rgb(107, 250, 243);
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 4px;
+    width: 200px;
+}
+
+input {
+box-sizing: border-box;
+    width: 100px;
+    padding: 7px 5px;
+    margin: 0 10px 0 0;
+    border-radius: 5px;
+    }
+
+    #first {
+box-sizing: border-box;
+    width: 75%;
+    padding: 7px 5px;
+    margin-top: 10px;
+    margin-right: 100px;
+    border-radius: 5px;
+    }
+
+    #second {
+box-sizing: border-box;
+    width: 75%;
+    padding: 7px 5px;
+    margin-top: 10px;
+    margin-right: 100px;
+    border-radius: 5px;
+    }
+
+
+</style>
+</body>
+<script>
+    // jQuery ".Class" SELECTOR.
+    $(document).ready(function() {
+        $('.groupOfTexbox').keypress(function (event) {
+            return isNumber(event, this)
+        });
+    });
+    // THE SCRIPT THAT CHECKS IF THE KEY PRESSED IS A NUMERIC OR DECIMAL VALUE.
+    function isNumber(evt, element) {
+
+        var charCode = (evt.which) ? evt.which : event.keyCode
+
+        if (
+            (charCode != 45 || $(element).val().indexOf('-') != -1) &&      // Check minus and only once.
+            (charCode != 46 || $(element).val().indexOf('.') != -1) &&      // Check dot and only once.
+            (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+
+</script>
+
+</html>
+
+
