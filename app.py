@@ -17,8 +17,8 @@ standard_to = StandardScaler()
 def predict():
 
     if request.method == 'POST':
-        Irradiance = int(request.form['Irradiance'])
-        Resistance=float(request.form['Resistance'])
+        # Irradiance = int(request.form['Irradiance'])
+        # Resistance=float(request.form['Resistance'])
         I1 = float(request.form['I1'])
         V1 = float(request.form['V1'])
         I2 = float(request.form['I2'])
@@ -40,16 +40,47 @@ def predict():
         # Resistance = request.args.get('Resistance')
         # I1 = request.args.get('I1')
 
-        prediction=model.predict([[Irradiance,Resistance,I1,V1,I2,V2,I3,V3,I4,V4,I5,V5,I6,V6]])
+        prediction=model.predict([[I1,V1,I2,V2,I3,V3,I4,V4,I5,V5,I6,V6]])
         n = 0
         temp = 0.0
         for i in range(5):
             if (prediction[0, i] > temp):
                 temp = prediction[0, i]
                 n = i
-        faults = ["Fault : No Fault", "Fault : Short Circuit Fault", "Fault : Degradation", "Fault : Open Circuit Fault", "Fault : Partial Shadow"]
+        faults = ["Fault : No Fault", "Fault : Short Circuit fault at string ->", "Fault : Degradation", "Fault : Open Circuit fault at string ->", "Fault : Partial Shadow"]
 
-        return render_template('index.html', prediction_text=faults[n])
+        a=" "
+        if n==1 :
+            if (V1 < 0.00001) :
+               a+="1, "
+            if (V2 < 0.00001) :
+               a+="2, "
+            if (V3 < 0.00001) :
+               a+="3, "
+            if (V4 < 0.00001) :
+               a+="4, "
+            if (V5 < 0.00001) :
+               a+="5, "
+            if (V6 < 0.00001) :
+               a+="6"
+
+        if n==3 :
+            if (I1 < 0.00001) :
+               a+="1, "
+            if (I2 < 0.00001) :
+               a+="2, "
+            if (I3 < 0.00001) :
+               a+="3, "
+            if (I4 < 0.00001) :
+               a+="4, "
+            if (I5 < 0.00001) :
+               a+="5, "
+            if (I6 < 0.00001) :
+               a+="6"
+
+
+
+        return render_template('index.html', prediction_text= faults[n] + a )
     else:
         return render_template('index.html', prediction_text="INPUT ERROR")
 
@@ -72,8 +103,8 @@ def predictresult():
         # I6 = float(request.form['I6'])
         # V6 = float(request.form['V6'])
 
-        Irradiance = request.args.get('Irradiance',type=int)
-        Resistance = request.args.get('Resistance',type=float)
+        # Irradiance = request.args.get('Irradiance',type=int)
+        # Resistance = request.args.get('Resistance',type=float)
         I1 = request.args.get('I1',type=float)
         V1 = request.args.get('V1',type=float)
         I2 = request.args.get('I2',type=float)
@@ -88,22 +119,52 @@ def predictresult():
         V6 = request.args.get('V6',type=float)
 
 
+
         # http: // 127.0.0 .1: 5000 / predict /?Irradiance = 1000 & Resistance = 2 & I1 = 0 & V1 = 100 & I2 = 0 & V2 = 100 & I3 = 20 & V3 = 100 & I4 = 20 & V4 = 100 & I5 = 20 & V5 = 100 & I6 = 20 & V6 = 100
         # if key doesn't exist, returns None
         # Irradiance = request.args.get('Irradiance')
         # Resistance = request.args.get('Resistance')
         # I1 = request.args.get('I1')
 
-        prediction=model.predict([[Irradiance,Resistance,I1,V1,I2,V2,I3,V3,I4,V4,I5,V5,I6,V6]])
+        prediction=model.predict([[I1,V1,I2,V2,I3,V3,I4,V4,I5,V5,I6,V6]])
         n = 0
         temp = 0.0
         for i in range(5):
             if (prediction[0, i] > temp):
                 temp = prediction[0, i]
                 n = i
-        faults = ["Fault : No Fault", "Fault : Short Circuit Fault", "Fault : Degradation", "Fault : Open Circuit Fault", "Fault : Partial Shadow"]
+        faults = ["No Fault", "SC at ", "Degradation", "OC at ", "Partial Shadow"]
 
-        return faults[n]
+        a = " "
+        if n == 1:
+            if (V1 < 0.01):
+                a += "1, "
+            if (V2 < 0.01):
+                a += "2, "
+            if (V3 < 0.01):
+                a += "3, "
+            if (V4 < 0.01):
+                a += "4, "
+            if (V5 < 0.01):
+                a += "5, "
+            if (V6 < 0.01):
+                a += "6"
+
+        if n == 3:
+            if (I1 < 0.01):
+                a += "1, "
+            if (I2 < 0.01):
+                a += "2, "
+            if (I3 < 0.01):
+                a += "3, "
+            if (I4 < 0.01):
+                a += "4, "
+            if (I5 < 0.01):
+                a += "5, "
+            if (I6 < 0.01):
+                a += "6"
+
+        return faults[n]+a
 
 
 
