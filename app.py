@@ -17,8 +17,7 @@ standard_to = StandardScaler()
 def predict():
 
     if request.method == 'POST':
-        # Irradiance = int(request.form['Irradiance'])
-        # Resistance=float(request.form['Resistance'])
+
         I1 = float(request.form['I1'])
         V1 = float(request.form['V1'])
         I2 = float(request.form['I2'])
@@ -32,14 +31,6 @@ def predict():
         I6 = float(request.form['I6'])
         V6 = float(request.form['V6'])
 
-
-
-        # http: // 127.0.0 .1: 5000 / predict /?Irradiance = 1000 & Resistance = 2 & I1 = 0 & V1 = 100 & I2 = 0 & V2 = 100 & I3 = 20 & V3 = 100 & I4 = 20 & V4 = 100 & I5 = 20 & V5 = 100 & I6 = 20 & V6 = 100
-        # if key doesn't exist, returns None
-        # Irradiance = request.args.get('Irradiance')
-        # Resistance = request.args.get('Resistance')
-        # I1 = request.args.get('I1')
-
         prediction=model.predict([[I1,V1,I2,V2,I3,V3,I4,V4,I5,V5,I6,V6]])
         n = 0
         temp = 0.0
@@ -50,19 +41,30 @@ def predict():
         faults = ["Fault : No Fault", "Fault : Short Circuit fault at string ->", "Fault : Degradation", "Fault : Open Circuit fault at string ->", "Fault : Partial Shadow"]
 
         a=" "
-        if n==1 :
-            if (V1 < 0.00001) :
-               a+="1, "
-            if (V2 < 0.00001) :
-               a+="2, "
-            if (V3 < 0.00001) :
-               a+="3, "
-            if (V4 < 0.00001) :
-               a+="4, "
-            if (V5 < 0.00001) :
-               a+="5, "
-            if (V6 < 0.00001) :
-               a+="6"
+
+        mv = max(V1,V2)
+        mv = max(mv,V3)
+        mv = max(mv, V4)
+        mv = max(mv, V5)
+        mv = max(mv, V6)
+        # the above input can also be given as
+        # lst = list(map(int, input().split()))
+        # -> taking input from the user
+        # mv = float(maxelement(lst))
+        if n == 1:
+            dig = float(mv * 0.9)
+            if (V1 < dig):
+                a += "1, "
+            if (V2 < dig):
+                a += "2, "
+            if (V3 < dig):
+                a += "3, "
+            if (V4 < dig):
+                a += "4, "
+            if (V5 < dig):
+                a += "5, "
+            if (V6 < dig):
+                a += "6"
 
         if n==3 :
             if (I1 < 0.00001) :
@@ -88,23 +90,7 @@ def predict():
 def predictresult():
 
     if request.method == 'POST':
-        # Irradiance = int(request.form['Irradiance'])
-        # Resistance=float(request.form['Resistance'])
-        # I1 = float(request.form['I1'])
-        # V1 = float(request.form['V1'])
-        # I2 = float(request.form['I2'])
-        # V2 = float(request.form['V2'])
-        # I3 = float(request.form['I3'])
-        # V3 = float(request.form['V3'])
-        # I4 = float(request.form['I4'])
-        # V4 = float(request.form['V4'])
-        # I5 = float(request.form['I5'])
-        # V5 = float(request.form['V5'])
-        # I6 = float(request.form['I6'])
-        # V6 = float(request.form['V6'])
 
-        # Irradiance = request.args.get('Irradiance',type=int)
-        # Resistance = request.args.get('Resistance',type=float)
         I1 = request.args.get('I1',type=float)
         V1 = request.args.get('V1',type=float)
         I2 = request.args.get('I2',type=float)
@@ -120,11 +106,7 @@ def predictresult():
 
 
 
-        # http: // 127.0.0 .1: 5000 / predict /?Irradiance = 1000 & Resistance = 2 & I1 = 0 & V1 = 100 & I2 = 0 & V2 = 100 & I3 = 20 & V3 = 100 & I4 = 20 & V4 = 100 & I5 = 20 & V5 = 100 & I6 = 20 & V6 = 100
-        # if key doesn't exist, returns None
-        # Irradiance = request.args.get('Irradiance')
-        # Resistance = request.args.get('Resistance')
-        # I1 = request.args.get('I1')
+        # http: // 127.0.0 .1: 5000 / predictresult /?I1 = 0 & V1 = 100 & I2 = 0 & V2 = 100 & I3 = 20 & V3 = 100 & I4 = 20 & V4 = 100 & I5 = 20 & V5 = 100 & I6 = 20 & V6 = 100
 
         prediction=model.predict([[I1,V1,I2,V2,I3,V3,I4,V4,I5,V5,I6,V6]])
         n = 0
@@ -136,18 +118,29 @@ def predictresult():
         faults = ["No Fault", "SC at ", "Degradation", "OC at ", "Partial Shadow"]
 
         a = " "
+
+        mv = max(V1, V2)
+        mv = max(mv, V3)
+        mv = max(mv, V4)
+        mv = max(mv, V5)
+        mv = max(mv, V6)
+        # the above input can also be given as
+        # lst = list(map(int, input().split()))
+        # -> taking input from the user
+        # mv = float(maxelement(lst))
         if n == 1:
-            if (V1 < 0.01):
+            dig = float(mv * 0.9)
+            if (V1 < dig):
                 a += "1, "
-            if (V2 < 0.01):
+            if (V2 < dig):
                 a += "2, "
-            if (V3 < 0.01):
+            if (V3 < dig):
                 a += "3, "
-            if (V4 < 0.01):
+            if (V4 < dig):
                 a += "4, "
-            if (V5 < 0.01):
+            if (V5 < dig):
                 a += "5, "
-            if (V6 < 0.01):
+            if (V6 < dig):
                 a += "6"
 
         if n == 3:
