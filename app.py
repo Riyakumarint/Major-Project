@@ -66,6 +66,7 @@ def predict():
             if (V6 < dig):
                 a += "6"
 
+
         if n==3 :
             if (I1 < 0.00001) :
                a+="1, "
