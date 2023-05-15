@@ -147,7 +147,7 @@ def predictresult():
             if (prediction[0, i] > temp):
                 temp = prediction[0, i]
                 n = i
-        faults = ["No Fault", "SC at ", "Degradation at ", "OC at ", "Partial Shadow at "]
+        faults = ["No Fault", "SC at ", "Degradation at ", "OC at ", "Shadow at "]
 
         a = " "
 
