@@ -38,7 +38,7 @@ def predict():
             if (prediction[0, i] > temp):
                 temp = prediction[0, i]
                 n = i
-        faults = ["Fault : No Fault", "Fault : Short Circuit fault at string ->", "Fault : Degradation", "Fault : Open Circuit fault at string ->", "Fault : Partial Shadow"]
+        faults = ["Fault : No Fault", "Fault : Short Circuit fault at string ->", "Fault : Degradation at string ->", "Fault : Open Circuit fault at string ->", "Fault : Partial Shadow at string ->"]
 
         a=" "
 
@@ -47,10 +47,13 @@ def predict():
         mv = max(mv, V4)
         mv = max(mv, V5)
         mv = max(mv, V6)
-        # the above input can also be given as
-        # lst = list(map(int, input().split()))
-        # -> taking input from the user
-        # mv = float(maxelement(lst))
+
+        mi = max(I1, I2)
+        mi = max(mi, I3)
+        mi = max(mi, I4)
+        mi = max(mi, I5)
+        mi = max(mi, I6)
+
         if n == 1:
             dig = float(mv * 0.9)
             if (V1 < dig):
@@ -64,6 +67,20 @@ def predict():
             if (V5 < dig):
                 a += "5, "
             if (V6 < dig):
+                a += "6"
+
+        if n == 2:
+            if (I1 < mi):
+                a += "1, "
+            if (I2 < mi):
+                a += "2, "
+            if (I3 < mi):
+                a += "3, "
+            if (I4 < mi):
+                a += "4, "
+            if (I5 < mi):
+                a += "5, "
+            if (I6 < mi):
                 a += "6"
 
 
@@ -81,6 +98,20 @@ def predict():
             if (I6 < 0.00001) :
                a+="6"
 
+        if n == 4:
+            dig = float(mv * 0.9)
+            if (V1 < dig):
+                a += "1, "
+            if (V2 < dig):
+                a += "2, "
+            if (V3 < dig):
+                a += "3, "
+            if (V4 < dig):
+                a += "4, "
+            if (V5 < dig):
+                a += "5, "
+            if (V6 < dig):
+                a += "6"
 
 
         return render_template('index.html', prediction_text= faults[n] + a )
@@ -116,7 +147,7 @@ def predictresult():
             if (prediction[0, i] > temp):
                 temp = prediction[0, i]
                 n = i
-        faults = ["No Fault", "SC at ", "Degradation", "OC at ", "Partial Shadow"]
+        faults = ["No Fault", "SC at ", "Degradation at ", "OC at ", "Partial Shadow at "]
 
         a = " "
 
@@ -125,10 +156,13 @@ def predictresult():
         mv = max(mv, V4)
         mv = max(mv, V5)
         mv = max(mv, V6)
-        # the above input can also be given as
-        # lst = list(map(int, input().split()))
-        # -> taking input from the user
-        # mv = float(maxelement(lst))
+
+        mi = max(I1, I2)
+        mi = max(mi, I3)
+        mi = max(mi, I4)
+        mi = max(mi, I5)
+        mi = max(mi, I6)
+
         if n == 1:
             dig = float(mv * 0.9)
             if (V1 < dig):
@@ -142,6 +176,20 @@ def predictresult():
             if (V5 < dig):
                 a += "5, "
             if (V6 < dig):
+                a += "6"
+
+        if n == 2:
+            if (I1 < mi):
+                a += "1, "
+            if (I2 < mi):
+                a += "2, "
+            if (I3 < mi):
+                a += "3, "
+            if (I4 < mi):
+                a += "4, "
+            if (I5 < mi):
+                a += "5, "
+            if (I6 < mi):
                 a += "6"
 
         if n == 3:
@@ -158,10 +206,24 @@ def predictresult():
             if (I6 < 0.01):
                 a += "6"
 
+        if n == 4:
+            dig = float(mv * 0.9)
+            if (V1 < dig):
+                a += "1, "
+            if (V2 < dig):
+                a += "2, "
+            if (V3 < dig):
+                a += "3, "
+            if (V4 < dig):
+                a += "4, "
+            if (V5 < dig):
+                a += "5, "
+            if (V6 < dig):
+                a += "6"
+
         return faults[n]+a
 
 
 
 if __name__=="__main__":
     app.run(debug=True)
-
